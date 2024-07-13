@@ -1,8 +1,10 @@
 import React from 'react';
 import appwriteService from "../appwrite/config";
 import { Link } from 'react-router-dom';
+import useTheme from '../contexts/theme';
 
 function PostCard({ $id, title, featuredimg }) {
+    const { theme } = useTheme();
     // Generate the preview URL safely
     let previewUrl = '';
     if (featuredimg) {
@@ -25,7 +27,7 @@ function PostCard({ $id, title, featuredimg }) {
                         <div className="placeholder-image">Image not available</div>
                     )}
                 </div>
-                <h2 className='text-xl font-bold'>{title}</h2>
+                <h2 className={`text-xl font-bold ${theme === 'light' ? 'text-black' : 'text-black'}`}>{title}</h2>
             </div>
         </Link>
     );
