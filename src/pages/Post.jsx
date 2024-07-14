@@ -99,53 +99,57 @@ export default function Post() {
     return post ? (
         <div className={`min-h-screen ${theme === 'light' ? 'bg-white' : 'bg-black'}`}>
             <Container>
-                <div className={`w-full flex justify-center mb-4 relative rounded-xl p-4 ${theme === 'light' ? 'bg-white' : 'bg-black'}`}>
-                    <img
-                        src={appwriteService.getFilePreview(post.featuredimg)}
-                        alt={post.title}
-                        className="rounded-xl z-[1] max-w-screen-sm md:max-w-[500px] lg:max-w-[700px] xl:max-w-[800px]"
-                    />
-
-                    {isAuthor && (
-                        <div className="absolute right-6 top-6">
-                            <Link to={`/edit-post/${post.$id}`}>
-                                <button className="mr-3 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-400">
-                                    Edit
-                                </button>
-                            </Link>
-                            <button
-                                className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-400"
-                                onClick={deletePost}
-                            >
-                                Delete
-                            </button>
+                <div className={`flex flex-col md:flex-row items-start mb-4 relative rounded-xl p-4 ${theme === 'light' ? 'bg-white' : 'bg-black'}`}>
+                    <div className="md:w-1/2 md:pr-4">
+                        <div className={`text-3xl font-bold mb-4 ${theme === 'light' ? 'text-black' : 'text-white'}`}>
+                            {post.title}
                         </div>
-                    )}
-                </div>
-                <div className={`w-full mb-6 text-${theme === 'light' ? 'black' : 'white'} text-3xl font-bold`}>
-                    {post.title}
-                </div>
-                <div className={`text-2xl font-light text-${theme === 'light' ? 'black' : 'white'}`}>
-                    <div className={`p-8 ${theme === 'light' ? 'bg-white' : 'bg-black'} space-y-4`}>
-                        {parse(post.content, {
-                            replace: (domNode) => {
-                                if (domNode.name === 'p') {
-                                    return <p className="mb-4 md:mb-6 lg:mb-8 xl:mb-10">{domNode.children.map(child => child.data)}</p>;
-                                }
-                                return domNode;
-                            }
-                        })}
+                        {isAuthor && (
+                            <div className="flex flex-col space-y-3 mb-4">
+                                <Link to={`/edit-post/${post.$id}`}>
+                                    <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-400">
+                                        Edit
+                                    </button>
+                                </Link>
+                                <button
+                                    className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-400"
+                                    onClick={deletePost}
+                                >
+                                    Delete
+                                </button>
+                            </div>
+                        )}
+                        <div className="mt-4 flex items-center space-x-2">
+                            <LikeBtn
+                                name="Like"
+                                likeCount={likeCount}
+                                handleLikes={handleLikes}
+                                isLiked={isLiked}
+                            />
+                            <span className="text-lg font-light">
+                                Like{likeCount > 1 ? 's' : ''}
+                            </span>
+                        </div>
+                    </div>
+                    <div className="md:w-1/2 flex justify-end">
+                        <img
+                            src={appwriteService.getFilePreview(post.featuredimg)}
+                            alt={post.title}
+                            className="rounded-xl border border-gray-300 object-contain w-full h-auto max-w-md"
+                        />
                     </div>
                 </div>
-                <div className="mt-2">
-                    <LikeBtn
-                        likeCount={likeCount}
-                        handleLikes={handleLikes}
-                        isLiked={isLiked}
-                    />
+                <div className={`text-xl font-light ${theme === 'light' ? 'text-black' : 'text-white'}`}>
+                    {parse(post.content, {
+                        replace: (domNode) => {
+                            if (domNode.name === 'p') {
+                                return <p className="mb-4">{domNode.children.map(child => child.data)}</p>;
+                            }
+                            return domNode;
+                        }
+                    })}
                 </div>
             </Container>
         </div>
     ) : null;
 }
-
