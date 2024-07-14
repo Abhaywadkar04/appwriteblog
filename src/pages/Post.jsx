@@ -103,7 +103,7 @@ export default function Post() {
                     <img
                         src={appwriteService.getFilePreview(post.featuredimg)}
                         alt={post.title}
-                        className="rounded-xl z-[1] max-w-sm"
+                        className="rounded-xl z-[1] max-w-screen-sm md:max-w-[500px] lg:max-w-[700px] xl:max-w-[800px]"
                     />
 
                     {isAuthor && (
@@ -130,7 +130,7 @@ export default function Post() {
                         {parse(post.content, {
                             replace: (domNode) => {
                                 if (domNode.name === 'p') {
-                                    return <p className="mb-4">{domNode.children.map(child => child.data)}</p>;
+                                    return <p className="mb-4 md:mb-6 lg:mb-8 xl:mb-10">{domNode.children.map(child => child.data)}</p>;
                                 }
                                 return domNode;
                             }
@@ -148,3 +148,4 @@ export default function Post() {
         </div>
     ) : null;
 }
+
